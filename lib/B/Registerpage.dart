@@ -7,16 +7,16 @@ import 'package:lottie/lottie.dart';
 
 import 'package:miniapp/components/my_Textfield.dart';
 
-import 'Login.dart';
+import 'Phonehome.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class phoneRegister extends StatefulWidget {
+  const phoneRegister({super.key});
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<phoneRegister> createState() => _phoneRegisterState();
 }
 
-class _RegisterState extends State<Register> {
+class _phoneRegisterState extends State<phoneRegister> {
   final formkey = GlobalKey<FormState>();
   var name = TextEditingController();
   var email = TextEditingController();
@@ -26,56 +26,71 @@ class _RegisterState extends State<Register> {
   var confirmpass = TextEditingController();
   var circular = 0;
 
-  Future<dynamic> register() async {
-    print("aaaaaa");
-    setState(() {
-      circular = 1;
+  reg() async {
+    circular = 1;
+    print("Done");
+    await FirebaseFirestore.instance.collection("phoneauthregister").add({
+      "Name": name.text,
+      "Email": email.text,
+      "phone": phone.text,
+      "path": "1"
     });
-    try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email.text,
-        password: password.text,
-      );
-
-      await FirebaseFirestore.instance
-          .collection('userregister')
-          .doc(credential.user!.uid)
-          .set({
-        "Name": name.text,
-        "Email": email.text,
-        "passsword": password.text,
-        "phone": phone.text,
-        "path": "1"
-      });
-      circular = 2;
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) {
-          return Login();
-        },
-      ));
-      print("Added success");
-    } on FirebaseAuthException catch (e) {
-      circular = 2;
-      if (e.code == 'weak-password') {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-          "The password provided is too weak",
-          style: TextStyle(color: Colors.amberAccent),
-        )));
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(
-          "he account already exists for that email.",
-          style: TextStyle(color: Colors.red),
-        )));
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
+    circular = 2;
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return PhoneHome();
+      },
+    ));
   }
+  // Future<dynamic> register() async {
+  //   print("aaaaaa");
+  //   setState(() {
+  //     circular = 1;
+  //   });
+  //   try {
+  //     final credential =
+  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: email.text,
+  //       password: password.text,
+  //     );
+  //
+  //     await FirebaseFirestore.instance
+  //         .collection('phoneauthregister')
+  //         .doc(credential.user!.uid)
+  //         .set({
+  //       "Name": name.text,
+  //       "Email": email.text,
+  //       "phone": phone.text,
+  //       "path": "1"
+  //     });
+  //     circular = 2;
+  //     Navigator.push(context, MaterialPageRoute(
+  //       builder: (context) {
+  //         return PhoneHome();
+  //       },
+  //     ));
+  //     print("Added success");
+  //   } on FirebaseAuthException catch (e) {
+  //     circular = 2;
+  //     if (e.code == 'weak-password') {
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           content: Text(
+  //         "The password provided is too weak",
+  //         style: TextStyle(color: Colors.amberAccent),
+  //       )));
+  //       print('The password provided is too weak.');
+  //     } else if (e.code == 'email-already-in-use') {
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           content: Text(
+  //         "he account already exists for that email.",
+  //         style: TextStyle(color: Colors.red),
+  //       )));
+  //       print('The account already exists for that email.');
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +117,14 @@ class _RegisterState extends State<Register> {
                   ],
                 ),
               ),
+              Container(
+                height: 200,
+                width: 250,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/1111.jpeg"),
+                        fit: BoxFit.fill)),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 30),
                 child: MyTextFields(
@@ -114,26 +137,27 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.only(
                     left: 50, right: 50, bottom: 10, top: 10),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "empty email";
                     }
-                    if (!value.contains(
-                        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')) {
-                      return 'Invalid Email';
-                    }
-                    return null;
+                    // if (!value.contains(
+                    //     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')) {
+                    //   return 'Invalid Email';
+                    // }
+                    // return null;
                   },
                   controller: email,
                   obscureText: false,
                   decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade200),
+                        borderSide: BorderSide(color: Colors.blue.shade100),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: BorderSide(color: Colors.blue.shade100),
                       ),
-                      fillColor: Colors.grey[100],
+                      fillColor: Colors.transparent,
                       filled: true,
                       hintText: "Email",
                       hintStyle: TextStyle(color: Colors.grey)),
@@ -145,16 +169,6 @@ class _RegisterState extends State<Register> {
                 hintText: "Phone",
                 obscureText: false,
               ),
-              MyTextFields(
-                  validation: "Emptypassword",
-                  controller: password,
-                  hintText: "password",
-                  obscureText: true),
-              MyTextFields(
-                  validation: "Empty Pass",
-                  controller: confirmpass,
-                  hintText: "Confirm pass",
-                  obscureText: true),
               Padding(
                 padding: const EdgeInsets.only(top: 50),
                 child: Row(
@@ -163,23 +177,14 @@ class _RegisterState extends State<Register> {
                     InkWell(
                         onTap: () async {
                           if (formkey.currentState!.validate()) {
-                            if (password.text == confirmpass.text) {
-                              register();
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                      content: Text(
-                                "those password are don't match",
-                                style: TextStyle(color: Colors.red),
-                              )));
-                            }
+                            reg();
                           }
                         },
                         child: Container(
                           height: 50,
                           width: 200,
                           decoration: BoxDecoration(
-                            color: Colors.white54,
+                            color: Colors.blue.shade100,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
@@ -231,13 +236,16 @@ class _RegisterState extends State<Register> {
                   ),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Login(),
-                            ));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => Login(),
+                        //     ));
                       },
-                      child: Text("Login"))
+                      child: Text(
+                        "Login",
+                        style: TextStyle(color: Colors.blue.shade50),
+                      ))
                 ],
               )
             ],

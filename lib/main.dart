@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'B/Otpscreen.dart';
 import 'B/phonenum.dart';
 import 'googleauth/gauthgate.dart';
 import 'md user email pass auth/auth_gate.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: AuthGate());
+        home: SignMobile()
+    );
   }
 }

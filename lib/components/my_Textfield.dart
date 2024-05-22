@@ -19,6 +19,7 @@ class MyTextFields extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5, left: 50, right: 50),
       child: TextFormField(
+        style: TextStyle(color: Colors.white),
         validator: (value) {
           if (value!.isEmpty) {
             return validation;
@@ -28,13 +29,14 @@ class MyTextFields extends StatelessWidget {
         obscureText: obscureText,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade200),
+              borderSide: BorderSide(color: Colors.blue.shade100),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.blue.shade100),
             ),
-            fillColor: Colors.grey[100],
+            fillColor: Colors.transparent,
             filled: true,
+
             hintText: hintText,
             hintStyle: TextStyle(color: Colors.grey)),
       ),

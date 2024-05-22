@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:miniapp/md%20user%20email%20pass%20auth/Forgotpassword.dart';
 import 'package:miniapp/md%20user%20email%20pass%20auth/register.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'BNavigationbar.dart';
-import 'adddataview.dart';
 
 class Login extends StatefulWidget {
   const Login({
@@ -172,6 +173,23 @@ class _LoginState extends State<Login> {
               ),
             ),
             Padding(
+              padding: const EdgeInsets.only(right: 50),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return ForgotPassword();
+                          },
+                        ));
+                      },
+                      child: Text("forgot password")),
+                ],
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.only(top: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -186,23 +204,45 @@ class _LoginState extends State<Login> {
                       height: 50,
                       width: 200,
                       decoration: BoxDecoration(
-                        color: Colors.blue.shade100,
+                        color: Colors.white54,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Center(
-                          child: circular == 1
-                              ? CircularProgressIndicator()
-                              : circular == 2
-                                  ? Text(
-                                      'LOGIN',
-                                      style: TextStyle(
-                                          letterSpacing: .5, fontSize: 15),
-                                    )
-                                  : Text(
-                                      'LOGIN',
-                                      style: TextStyle(
-                                          letterSpacing: .5, fontSize: 15),
-                                    )),
+                        child: circular == 1
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'LOGIN',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.blue.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Container(
+                                      height: 50,
+                                      width: 50,
+                                      child: Lottie.asset(
+                                        "assets/Animation - 1716349219172.json",
+                                      )),
+                                ],
+                              )
+                            : circular == 2
+                                ? Text(
+                                    'LOGIN',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.blue.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text(
+                                    'LOGIN',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.blue.shade900,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                      ),
                     ),
                   ),
                 ],
@@ -232,174 +272,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:miniapp/A/register.dart';
-// import 'package:miniapp/components/my_Textfield.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-//
-// import 'adddataview.dart';
-//
-// class Login extends StatefulWidget {
-//   const Login({super.key});
-//
-//   @override
-//   State<Login> createState() => _LoginState();
-// }
-//
-// class _LoginState extends State<Login> {
-//   final formkey = GlobalKey<FormState>();
-//   var emailctrl = TextEditingController();
-//   var passctrl = TextEditingController();
-//   var id;
-//   Future<dynamic> Login() async {
-//     try {
-//       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-//           email: emailctrl.text, password: passctrl.text);
-//
-//       final user = await FirebaseFirestore.instance
-//           .collection('mechsighn')
-//           .where('email', isEqualTo: emailctrl.text)
-//           .where('password', isEqualTo: passctrl.text)
-//           .get();
-//       if (user.docs.isNotEmpty) {
-//         id = user.docs[0].id;
-//
-//         SharedPreferences data = await SharedPreferences.getInstance();
-//         data.setString('id', id);
-//
-//         Navigator.push(context, MaterialPageRoute(
-//           builder: (context) {
-//             return Homescreen();
-//           },
-//         ));
-//       } else {
-//         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-//             content: Text(
-//           "username and password error",
-//           style: TextStyle(color: Colors.red),
-//         )));
-//       }
-//     } on FirebaseAuthException catch (e) {
-//       if (e.code == 'user-not-found') {
-//         print('No user found for that email.');
-//       } else if (e.code == 'wrong-password') {
-//         print('Wrong password provided for that user.');
-//       }
-//     }
-//   }
-//
-// //   @override
-//   Widget build(BuildContext context) {
-//     return Form(
-//       key: formkey,
-//       child: Scaffold(
-//         backgroundColor: Colors.black,
-//         body: ListView(
-//           children: [
-//             Padding(
-//               padding: const EdgeInsets.only(top: 100),
-//               child: Column(
-//                 children: [
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       Text(
-//                         'MD STORE ',
-//                         style: GoogleFonts.akronim(
-//                           textStyle: TextStyle(
-//                               color: Colors.blue.shade100,
-//                               letterSpacing: .5,
-//                               fontSize: 40),
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       Text(
-//                         ' LOGIN',
-//                         style: GoogleFonts.aleo(
-//                           textStyle: TextStyle(
-//                               color: Colors.blue.shade100,
-//                               letterSpacing: .5,
-//                               fontSize: 30),
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                   Container(
-//                     height: 50,
-//                     width: 100,
-//                     decoration: BoxDecoration(
-//                         image: DecorationImage(
-//                             image: AssetImage("assets/images.png"),
-//                             fit: BoxFit.fill)),
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.only(top: 100),
-//                     child: MyTextFields(
-//                         controller: emailctrl,
-//                         hintText: "Username",
-//                         obscureText: false,
-//                         validation: "Empty Username"),
-//                   ),
-//                   MyTextFields(
-//                       controller: passctrl,
-//                       hintText: "Enter your Password",
-//                       obscureText: true,
-//                       validation: "Emptyusername"),
-//                   Padding(
-//                     padding: const EdgeInsets.only(top: 100),
-//                     child: Container(
-//                       height: 50,
-//                       width: 200,
-//                       decoration: BoxDecoration(
-//                           color: Colors.blue.shade100,
-//                           borderRadius: BorderRadius.circular(10)),
-//                       child: Center(
-//                         child: Text(
-//                           'LOGIN',
-//                           style: GoogleFonts.lato(
-//                             textStyle:
-//                                 TextStyle(letterSpacing: .5, fontSize: 15),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       Text(
-//                         "Create a new account",
-//                         style: TextStyle(color: Colors.amber.shade50),
-//                       ),
-//                       TextButton(
-//                           onPressed: () {
-//                             Navigator.push(
-//                                 context,
-//                                 MaterialPageRoute(
-//                                   builder: (context) => Register(),
-//                                 ));
-//                           },
-//                           child: Text(
-//                             "Register",
-//                             style: TextStyle(color: Colors.blue.shade100),
-//                           ))
-//                     ],
-//                   )
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

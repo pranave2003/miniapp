@@ -10,6 +10,8 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
+import 'Otpscreen.dart';
+
 class SignMobile extends StatefulWidget {
   const SignMobile({super.key});
 
@@ -90,13 +92,13 @@ class _SignMobileState extends State<SignMobile> {
             backgroundColor: Colors.green,
             textColor: Colors.white,
           );
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //       builder: (context) => OtpScreen(
-          //         verificationId: verificationId,
-          //       )),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => OtpScreen(
+                      verificationId: verificationId,
+                    )),
+          );
         },
         codeAutoRetrievalTimeout: (String verificationId) {
           print('Auto retrieval timeout. Verification ID: $verificationId');
@@ -127,27 +129,21 @@ class _SignMobileState extends State<SignMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: Icon(Icons.arrow_back_ios))),
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Column(children: [
           Padding(
-            padding: EdgeInsets.only(top: 50),
+            padding: EdgeInsets.only(top: 30),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  height: 250,
-                  width: 250,
+                  height: 300,
+                  width: 300,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(
-                              "assets/Screenshot 2024-02-01 143544.png"))),
+                          image: AssetImage("assets/1111.jpeg"),
+                          fit: BoxFit.fill)),
                 ),
               ],
             ),
@@ -158,7 +154,11 @@ class _SignMobileState extends State<SignMobile> {
               Text(
                 "Enter your Mobile Number",
                 style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w600, fontSize: 25),
+                  textStyle: TextStyle(
+                      color: Colors.blue.shade100,
+                      letterSpacing: .5,
+                      fontSize: 20),
+                ),
               )
             ],
           ),
@@ -168,18 +168,24 @@ class _SignMobileState extends State<SignMobile> {
               Text(
                 "We Will send you a Confirmation Code",
                 style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w300, fontSize: 15),
+                  textStyle: TextStyle(
+                      color: Colors.blue.shade100,
+                      letterSpacing: .5,
+                      fontSize: 10),
+                ),
               )
             ],
           ),
           Padding(
             padding: EdgeInsets.only(top: 50, left: 50, right: 50),
             child: IntlPhoneField(
+              style: TextStyle(color: Colors.blue.shade100),
               controller: phoneController,
               decoration: InputDecoration(
                 labelText: 'Phone Number',
+                labelStyle: TextStyle(color: Colors.grey),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
+                  borderSide: BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -205,7 +211,7 @@ class _SignMobileState extends State<SignMobile> {
                     height: 50,
                     width: 250,
                     decoration: BoxDecoration(
-                        color: Colors.purple,
+                        color: Colors.blue.shade100,
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
@@ -219,7 +225,7 @@ class _SignMobileState extends State<SignMobile> {
                       style: GoogleFonts.poppins(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
-                          color: Colors.white),
+                          color: Colors.blue.shade900),
                     )),
                   ),
                 )
