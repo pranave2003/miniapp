@@ -1,101 +1,76 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-
-import 'package:miniapp/components/my_Textfield.dart';
-
+import '../components/my_Textfield.dart';
 import 'Phonehome.dart';
 
-class phoneRegister extends StatefulWidget {
-  const phoneRegister({super.key});
-
+class RegistrationPage extends StatefulWidget {
   @override
-  State<phoneRegister> createState() => _phoneRegisterState();
+  _RegistrationPageState createState() => _RegistrationPageState();
 }
 
-class _phoneRegisterState extends State<phoneRegister> {
-  final formkey = GlobalKey<FormState>();
-  var name = TextEditingController();
-  var email = TextEditingController();
-  var place = TextEditingController();
-  var phone = TextEditingController();
-  var password = TextEditingController();
-  var confirmpass = TextEditingController();
-  var circular = 0;
+class _RegistrationPageState extends State<RegistrationPage> {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController namename = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController place = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  reg() async {
-    circular = 1;
-    print("Done");
-    await FirebaseFirestore.instance.collection("phoneauthregister").add({
-      "Name": name.text,
-      "Email": email.text,
-      "phone": phone.text,
-      "path": "1"
-    });
-    circular = 2;
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) {
-        return PhoneHome();
-      },
-    ));
+  @override
+  void initState() {
+    super.initState();
+    _checkUserExists();
   }
-  // Future<dynamic> register() async {
-  //   print("aaaaaa");
-  //   setState(() {
-  //     circular = 1;
-  //   });
-  //   try {
-  //     final credential =
-  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email.text,
-  //       password: password.text,
-  //     );
-  //
-  //     await FirebaseFirestore.instance
-  //         .collection('phoneauthregister')
-  //         .doc(credential.user!.uid)
-  //         .set({
-  //       "Name": name.text,
-  //       "Email": email.text,
-  //       "phone": phone.text,
-  //       "path": "1"
-  //     });
-  //     circular = 2;
-  //     Navigator.push(context, MaterialPageRoute(
-  //       builder: (context) {
-  //         return PhoneHome();
-  //       },
-  //     ));
-  //     print("Added success");
-  //   } on FirebaseAuthException catch (e) {
-  //     circular = 2;
-  //     if (e.code == 'weak-password') {
-  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //           content: Text(
-  //         "The password provided is too weak",
-  //         style: TextStyle(color: Colors.amberAccent),
-  //       )));
-  //       print('The password provided is too weak.');
-  //     } else if (e.code == 'email-already-in-use') {
-  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //           content: Text(
-  //         "he account already exists for that email.",
-  //         style: TextStyle(color: Colors.red),
-  //       )));
-  //       print('The account already exists for that email.');
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
+  Future<void> _checkUserExists() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(user.uid).get();
+
+      if (userDoc.exists) {
+        // User is already registered, navigate to HomePage
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => PhoneHome(),
+        ));
+      }
+    }
+  }
+
+  void _register() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      await _firestore.collection('users').doc(user.uid).set({
+        'name': namename.text,
+        'place': place.text,
+        'phone': user.phoneNumber,
+        "email": email.text
+      });
+
+      _showMessage('Registration successful');
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => PhoneHome(),
+      ));
+    } else {
+      _showMessage('User not signed in');
+    }
+  }
+
+  void _showMessage(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  var circular = 0;
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: formkey,
+      key: formKey,
       child: Scaffold(
           backgroundColor: Colors.black,
           body: ListView(
@@ -129,7 +104,7 @@ class _phoneRegisterState extends State<phoneRegister> {
                 padding: const EdgeInsets.only(top: 30),
                 child: MyTextFields(
                     validation: "Empty Username",
-                    controller: name,
+                    controller: namename,
                     hintText: "Name",
                     obscureText: false),
               ),
@@ -164,9 +139,9 @@ class _phoneRegisterState extends State<phoneRegister> {
                 ),
               ),
               MyTextFields(
-                validation: "empty phonenumber",
-                controller: phone,
-                hintText: "Phone",
+                validation: "empty place",
+                controller: place,
+                hintText: "place",
                 obscureText: false,
               ),
               Padding(
@@ -176,8 +151,8 @@ class _phoneRegisterState extends State<phoneRegister> {
                   children: [
                     InkWell(
                         onTap: () async {
-                          if (formkey.currentState!.validate()) {
-                            reg();
+                          if (formKey.currentState!.validate()) {
+                            _register();
                           }
                         },
                         child: Container(
@@ -227,27 +202,6 @@ class _phoneRegisterState extends State<phoneRegister> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account?",
-                    style: TextStyle(color: Colors.amber.shade50),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => Login(),
-                        //     ));
-                      },
-                      child: Text(
-                        "Login",
-                        style: TextStyle(color: Colors.blue.shade50),
-                      ))
-                ],
-              )
             ],
           )),
     );

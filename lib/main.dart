@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'B/Otpscreen.dart';
+import 'B/Registerpage.dart';
+import 'B/Test.dart';
+import 'B/p1.dart';
 import 'B/phonenum.dart';
 import 'googleauth/gauthgate.dart';
 import 'md user email pass auth/auth_gate.dart';
 import 'firebase_options.dart';
-import 'googleauth/Googlelogin.dart';
-
-// ...
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +31,6 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: SignMobile()
-    );
+        home: RegistrationPage());
   }
 }

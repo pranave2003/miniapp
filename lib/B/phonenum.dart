@@ -1,14 +1,9 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 
 import 'Otpscreen.dart';
 
@@ -21,109 +16,13 @@ class SignMobile extends StatefulWidget {
 
 class _SignMobileState extends State<SignMobile> {
   //
-  Future<void> getData() async {
-    SharedPreferences spref = await SharedPreferences.getInstance();
-    String mobile = '';
-    mobile = phoneController.text;
-    setState(() {
-      spref.setString("num", mobile as String);
-      print("mobile............$mobile");
-    });
-    print("Updated");
-  }
 
   //
   final TextEditingController phoneController = TextEditingController();
-  FirebaseAuth auth = FirebaseAuth.instance;
-  void initState() {
-    super.initState();
-    _listenSmsCode();
-  }
-
-  _listenSmsCode() async {
-    await SmsAutoFill().listenForCode();
-  }
-
-  @override
-  void dispose() {
-    SmsAutoFill().unregisterListener();
-    super.dispose();
-  }
 
   String formatPhoneNumber(String phoneNumber, String countryCode) {
     String digits = phoneNumber.replaceAll(RegExp(r'\D'), '');
     return '+$countryCode$digits';
-  }
-
-  Future<void> otpNumber() async {
-    try {
-      var connectivityResult = await Connectivity().checkConnectivity();
-      if (connectivityResult == ConnectivityResult.none) {
-        showNoInternetNotification();
-        return;
-      }
-
-      String phoneNumber = phoneController.text;
-      String formattedPhoneNumber = formatPhoneNumber(phoneNumber, '91');
-
-      print('Formatted Phone Number: $formattedPhoneNumber');
-
-      await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: formattedPhoneNumber,
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          await auth.signInWithCredential(credential);
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          if (e.code == 'invalid-phone-number') {
-            if (kDebugMode) {
-              print('The provided phone number is not valid.');
-            }
-          } else {
-            print('Verification failed: $e');
-          }
-        },
-        timeout: Duration(seconds: 60),
-        codeSent: (String verificationId, int? resendToken) async {
-          print('Verification code sent! Verification ID: $verificationId');
-          Fluttertoast.showToast(
-            msg: "Verification code sent!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => OtpScreen(
-                      verificationId: verificationId,
-                    )),
-          );
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          print('Auto retrieval timeout. Verification ID: $verificationId');
-        },
-      );
-    } catch (e) {
-      print("Error sending verification code: $e");
-      Fluttertoast.showToast(
-        msg: "Error sending verification code: $e",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-    }
-  }
-
-  void showNoInternetNotification() {
-    Fluttertoast.showToast(
-      msg: "Please check your internet connection.",
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-    );
   }
 
   @override
@@ -204,8 +103,11 @@ class _SignMobileState extends State<SignMobile> {
               children: [
                 InkWell(
                   onTap: () {
-                    getData();
-                    otpNumber();
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return OTPpage(phoneNumber: phoneController.text);
+                      },
+                    ));
                   },
                   child: Container(
                     height: 50,
