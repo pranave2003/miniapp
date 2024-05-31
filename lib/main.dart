@@ -1,36 +1,54 @@
-import 'package:flutter/material.dart';
-
+// import 'package:flutter/material.dart';
+//
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:miniapp/video%20secssion/addvideo.dart';
+// import 'firebase_options.dart';
+// import 'innercollection/view.dart';
+//
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+//   runApp(const MyApp());
+// }
+//
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         title: 'Flutter Demo',
+//         theme: ThemeData(
+//           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//           useMaterial3: true,
+//         ),
+//         home: AddVideoPage());
+//   }
+// }
 import 'package:firebase_core/firebase_core.dart';
-import 'B/Otpscreen.dart';
-import 'B/Registerpage.dart';
-import 'B/Test.dart';
-import 'B/p1.dart';
-import 'B/phonenum.dart';
-import 'googleauth/gauthgate.dart';
-import 'md user email pass auth/auth_gate.dart';
-import 'firebase_options.dart';
+import 'package:flutter/material.dart';
+import 'package:miniapp/video%20secssion/Video%20List%20Page.dart';
+import 'package:miniapp/video%20secssion/addvideo.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: RegistrationPage());
+      initialRoute: '/',
+      routes: {
+        '/': (context) => AddVideoPage(),
+        '/video_list': (context) => VideoListPage(),
+      },
+    );
   }
 }

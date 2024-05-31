@@ -103,9 +103,13 @@ class _SignMobileState extends State<SignMobile> {
               children: [
                 InkWell(
                   onTap: () {
+                    String phoneNumber = phoneController.text;
+                    String formattedPhoneNumber =
+                        formatPhoneNumber(phoneNumber, '91');
+                    print("data send$formattedPhoneNumber");
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return OTPpage(phoneNumber: phoneController.text);
+                        return OTPpage(phoneNumber: formattedPhoneNumber);
                       },
                     ));
                   },

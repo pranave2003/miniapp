@@ -16,7 +16,6 @@ class Mdprofile extends StatefulWidget {
 
 class _MdprofileState extends State<Mdprofile> {
   var ID;
-  PickedFile? _image;
 
   @override
   void initState() {
@@ -31,6 +30,7 @@ class _MdprofileState extends State<Mdprofile> {
     });
   }
 
+  PickedFile? _image;
   Future<void> _getImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -44,6 +44,46 @@ class _MdprofileState extends State<Mdprofile> {
         print('No image selected.');
       }
     });
+  }
+
+  Future<void> update() async {
+    try {
+      if (_image != null) {
+        final ref = firebase_storage.FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child(DateTime.now().millisecondsSinceEpoch.toString());
+        await ref.putFile(File(_image!.path));
+
+        final imageURL = await ref.getDownloadURL();
+
+        await FirebaseFirestore.instance
+            .collection('userregister')
+            .doc(ID)
+            .update({
+          'path': imageURL,
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Profile updated successfully'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No image selected'),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error updating profile: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error updating profile'),
+        ),
+      );
+    }
   }
 
   @override
@@ -216,45 +256,5 @@ class _MdprofileState extends State<Mdprofile> {
         );
       },
     );
-  }
-
-  Future<void> update() async {
-    try {
-      if (_image != null) {
-        final ref = firebase_storage.FirebaseStorage.instance
-            .ref()
-            .child('user_images')
-            .child(DateTime.now().millisecondsSinceEpoch.toString());
-        await ref.putFile(File(_image!.path));
-
-        final imageURL = await ref.getDownloadURL();
-
-        await FirebaseFirestore.instance
-            .collection('userregister')
-            .doc(ID)
-            .update({
-          'path': imageURL,
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Profile updated successfully'),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No image selected'),
-          ),
-        );
-      }
-    } catch (e) {
-      print('Error updating profile: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Error updating profile'),
-        ),
-      );
-    }
   }
 }

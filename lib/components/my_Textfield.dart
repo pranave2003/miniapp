@@ -31,12 +31,12 @@ class MyTextFields extends StatelessWidget {
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.blue.shade100),
             ),
-            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.blue.shade100),
             ),
             fillColor: Colors.transparent,
             filled: true,
-
             hintText: hintText,
             hintStyle: TextStyle(color: Colors.grey)),
       ),
