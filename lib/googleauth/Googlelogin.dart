@@ -65,9 +65,11 @@ class _GoogleloginState extends State<Googlelogin> {
 
     return Scaffold(
       body: Center(
-          child: IconButton(onPressed: () {
-            _signInWithGoogle();
-          }, icon: Icon(Icons.g_mobiledata))),
+          child: IconButton(
+              onPressed: () {
+                _signInWithGoogle();
+              },
+              icon: Icon(Icons.g_mobiledata))),
     );
   }
 }

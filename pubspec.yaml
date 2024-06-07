@@ -51,6 +51,7 @@ dependencies:
   pinput: ^4.0.0
   firebase_messaging: ^14.9.3
   video_player: ^2.8.6
+  upi_india: ^3.0.1
   file_picker: ^8.0.3
 
 
