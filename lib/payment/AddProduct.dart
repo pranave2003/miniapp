@@ -54,12 +54,14 @@ class _AddproductState extends State<Addproduct> {
             ElevatedButton(
                 onPressed: () {
                   if (formkey.currentState!.validate()) {
-
-
                     FirebaseFirestore.instance
                         .collection("Payment")
                         .add({"productname": name.text, "Price": price.text});
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ListcartDetails(),));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ListcartDetails(),
+                        ));
                   }
                 },
                 child: Text("SUBMIT"))
