@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:miniapp/Fav%20using%20provider/Favproovider.dart';
 import 'package:miniapp/payment/ListCart.dart';
+import 'package:miniapp/rating/rating_page.dart';
+import 'package:miniapp/torch/torch.dart';
 import 'package:miniapp/video%20secssion/addvideo.dart';
 import 'package:provider/provider.dart';
 import 'Fav using provider/Homepage.dart';
@@ -27,11 +29,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => Favoriteprovider(),
-      child: const MaterialApp(
-        home: Homepage(),
-      ),
+    // return ChangeNotifierProvider(
+    //   create: (context) => Favoriteprovider(),
+    //   child: const MaterialApp(
+    //     home: RatingPage(),
+    //   ),
+    // );
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FlashlightPage(),
     );
   }
 }
