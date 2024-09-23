@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:miniapp/Fav%20using%20provider/Favproovider.dart';
-import 'package:miniapp/payment/ListCart.dart';
-import 'package:miniapp/rating/rating_page.dart';
+import 'package:miniapp/pr/Premium.dart';
 import 'package:miniapp/torch/torch.dart';
-import 'package:miniapp/video%20secssion/addvideo.dart';
-import 'package:provider/provider.dart';
-import 'Fav using provider/Homepage.dart';
-import 'NEW_WIDGETS/Segmented_button.dart';
-import 'NEW_WIDGETS/Slider_widget.dart';
-import 'NEW_WIDGETS/Stepper.dart';
+import 'CRUD/Firebasecrud.dart';
+import 'PhoneAuth/pauthgate.dart';
+import 'celibration.dart';
+import 'components/bu.dart';
 import 'firebase_options.dart';
-import 'innercollection/view.dart';
-import 'media_q.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +19,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     // return ChangeNotifierProvider(
@@ -37,7 +29,7 @@ class MyApp extends StatelessWidget {
     // );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FlashlightPage(),
+      home: ProductPage(),
     );
   }
 }
