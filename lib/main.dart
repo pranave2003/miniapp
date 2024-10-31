@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:miniapp/EmailandPassword/CrudAuth.dart';
 import 'package:miniapp/pr/Premium.dart';
 import 'package:miniapp/torch/torch.dart';
 import 'CRUD/Firebasecrud.dart';
+import 'EmailandPassword/CurdReg.dart';
 import 'PhoneAuth/pauthgate.dart';
 import 'celibration.dart';
 import 'components/bu.dart';
 import 'firebase_options.dart';
+import 'md user email pass auth/auth_gate.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +32,7 @@ class MyApp extends StatelessWidget {
     // );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ProductPage(),
+      home: Crudauth(),
     );
   }
 }
